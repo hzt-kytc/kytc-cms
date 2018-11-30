@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kytc.cms.dao.menu.MenuDao">
+	<resultMap id="menuPO" type="com.kytc.cms.po.menu.MenuPO">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="icon" property="icon" />
+		<result column="description" property="description" />
+		<result column="sort_num" property="sortNum" />
+		<result column="url" property="url"/>
+		<result column="is_deleted" property="deleted" />
+		<result column="operator" property="operator" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+	</resultMap>
+	<insert id="add" parameterType="com.kytc.cms.po.menu.MenuPO" useGeneratedKeys="true" keyProperty="id">
+		insert
+			into
+				tb_menu(
+					name,
+					icon,
+					description,
+					sort_num,
+					is_deleted,
+					url,
+					operator,
+					gmt_create,
+					gmt_modified
+				)values(
+					#{name},
+					#{icon},
+					#{description},
+					#{sortNum},
+					0,
+					#{url},
+					#{operator},
+					CURRENT_TIMESTAMP(),
+					CURRENT_TIMESTAMP()
+				);
+	</insert>
+	<update id="update" parameterType="com.kytc.cms.po.menu.MenuPO">
+		update 
+			tb_menu
+		set
+			name = #{name},
+			icon = #{icon},
+			description = #{description},
+			sort_num = #{sortNum},
+			url = #{url},
+			is_deleted = #{deleted},
+			operator = #{operator},
+			gmt_modified = CURRENT_TIMESTAMP()
+		where 
+			id = #{id}
+	</update>
+	<select id="detail" parameterType="Integer" resultMap="menuPO">
+		select 
+			*
+		from
+			tb_menu
+		where
+			id = #{id} 
+		limit 1;
+	</select>
+	<update id="delete" parameterType="com.kytc.cms.po.menu.MenuPO">
+		update 
+			tb_menu
+		set
+			is_deleted = 1 ,
+			operator = #{operator} ,
+			gmt_modified = CURRENT_TIMESTAMP() 
+		where 
+			id = #{id}
+	</update>
+	<sql id="listByCondition">
+		where
+			1 = 1
+			<if test="id!=null and id!=''">
+				and id = #{id}
+			</if>
+			<if test="name!=null and name!=''">
+				and name = #{name}
+			</if>
+			<if test="icon!=null and icon!=''">
+				and icon = #{icon}
+			</if>
+			<if test="sortNum!=null and sortNum!=''">
+				and sort_num = #{sortNum}
+			</if>
+			<if test="deleted!=null and deleted!=''">
+				and is_deleted = #{deleted}
+			</if>
+			<if test="operator!=null and operator!=''">
+				and operator = #{operator}
+			</if>
+	</sql>
+	<select id="list" parameterType="com.kytc.cms.vo.menu.MenuVO" resultMap="menuPO">
+		select 
+			*
+		from
+			tb_menu
+			<include refid="listByCondition"/> 
+			<if test="sort!=null and sort!=''">
+				order by ${sort} ${order} 
+			</if>
+			<if test="sort==null or sort==''">
+				order by gmt_modified desc 
+			</if>
+			limit #{start},#{pageSize};
+	</select>
+	<select id="count" parameterType="com.kytc.cms.vo.menu.MenuVO" resultType="Long">
+		select 
+			count(1)
+		from
+			tb_menu
+			<include refid="listByCondition"/>
+	</select>
+	<select id="infos" resultMap="menuPO">
+		select 
+			id,
+			name,
+			icon,
+			url 
+		from
+			tb_menu
+		where 
+			is_deleted = 0
+			order by sort_num asc 
+	</select>
+</mapper>
