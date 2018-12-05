@@ -138,33 +138,17 @@ $(function() {
 	}).on("contextmenu", "div.menu_div", function(e){
 		e.preventDefault();
 		$('#cms_main_menu_right_click').data("index",$(this).index());
-		console.log($(this).index())
 		$('#cms_main_menu_right_click').menu('show', {
 			left: e.pageX,
 			top: e.pageY
 		});
 		return false;
 	}).on("click",".footer em",function(){
-		if($("#cms_personal_info_main_div").length>0){
-			var index = setTopWindow();
-			$("#cms_personal_info_main_div").closest(".window").css("z-index", index*1+4);
-			return;
+		if ($(".system_info").is(":hidden")){
+			var height = $(".system_info").height();
+			$(".system_info").stop(true,true).css("bottom",(-20-height)+"px").show().animate({bottom:"40px"},1000);
 		}
-		var url = $(this).data("url");
-		var content = '<iframe src="/info" width="100%" height="99%" frameborder="0" scrolling="no"></iframe>';  
-	    var boarddiv = '<div id="cms_personal_info_main_div" title="个人信息"></div>'//style="overflow:hidden;"可以去掉滚动条  
-	    $(document.body).append(boarddiv);  
-	    var win = $('#cms_personal_info_main_div').dialog({  
-	        content: content,  
-	        width: 250,  
-	        height: 497,  
-	        modal: false,  
-	        left:0,
-	        cls:"personal_info",
-	        top:$(window).height()-510
-	    });  
-	    win.dialog('open');
-	    return false;
+		return false;
 	});
 	var main_right_div = $('#cms_main_right_click');
 	$("div.footer",main_div).on("contextmenu","span",function(e){
@@ -220,8 +204,11 @@ $(function() {
 		$("div.footer span[name='"+uuid+"']",main_div).addClass("active");
 	});
 	$(document).on("click","body:not(#cms_personal_info_main_div,div.footer em),body:not(div.footer>em)",function(){
-		if ($("#cms_personal_info_main_div").length>0){
-			$("#cms_personal_info_main_div").destroy();
+		if ($(".system_info").is(":visible")){
+			var height = $(".system_info").height();
+			$(".system_info").stop(true,true).animate({bottom:(-20-height)+"px"},1000,null,function(){
+				$(".system_info").hide();
+			});
 		}
 	});
 	$("#cms_main_menu_right_click").on("click","div[name='open']",function(){

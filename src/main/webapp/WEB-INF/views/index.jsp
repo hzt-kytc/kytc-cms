@@ -27,16 +27,16 @@
 			<span>${item.name }</span>
 		</div>
 	</c:forEach>
-	<div class="system_info">
+	<div class="system_info" style="background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544017376930&di=76cb8477c335ddbc39df56dad6218cc9&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F17953%2F20180208142217-1894661201_jpeg_550_600_26759.jpg%2F0) 0/cover">
 		<div class="user">
-			<img alt="" src="">
+			<label style="">
+				<img alt="" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544017376930&di=76cb8477c335ddbc39df56dad6218cc9&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F17953%2F20180208142217-1894661201_jpeg_550_600_26759.jpg%2F0">
+			</label>
 			<a>i伤心鱼</a>
 		</div>
 		<div class="menu_list">
 			<c:forEach items="${list }" var="item">
 				<div class="menu_item" data-url="${item.url }" data-id="${item.id }">
-<!-- 					<div></div> -->
-	<%-- 				<span><img alt="" src="${item.icon }"></span> --%>
 					<span>${item.name }</span>
 				</div>
 			</c:forEach>
