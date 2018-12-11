@@ -2,6 +2,8 @@ package com.kytc.cms;
 
 import javax.servlet.MultipartConfigElement;
 
+import net.unicon.cas.client.configuration.EnableCasClient;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan({"com.kytc.cms.dao"})
 @ComponentScan(basePackages={"com.kytc"})
 @ServletComponentScan
+@EnableCasClient // 开启CAS支持
 public class Application {
 	private static Logger logger = LoggerFactory.getLogger(Application.class);
 	@Bean
